@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-7xl mx-auto bg-white p-8 shadow-md">
+        <!-- Payment Section (Initially Visible) -->
+        <div id="payment-section" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Payment</h2>
+                <div class="border border-gray-200 p-6">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pay With:</label>
+                        <div>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="payment" value="card" class="form-radio text-blue-600" onclick="togglePaymentForm()">
+                                <span class="ml-2">Card</span>
+                            </label>
+                            <label class="inline-flex items-center ml-6">
+                                <input type="radio" name="payment" value="cod" class="form-radio text-blue-600" onclick="togglePaymentForm()">
+                                <span class="ml-2">COD</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Payment Form (Initially Hidden) -->
+                    <div id="card-payment-form" class="hidden">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
+                            <input type="text" id="card-number" class="border border-gray-300 rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="1234 5678 9101 1121">
+                        </div>
+                        <div class="mb-4 grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Expiration Date</label>
+                                <input type="text" id="expiry-date" class="border border-gray-300 rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="MM/YY">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">CVV</label>
+                                <input type="text" id="cvv" class="border border-gray-300 rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="123">
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" id="save-card-checkbox" class="form-checkbox text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Save card details</span>
+                            </label>
+                        </div>
+                        <button id="pay-button" onclick="confirmOrder()" class="bg-green-500 text-white text-lg font-medium rounded-lg w-full py-2 hover:bg-green-600">Pay</button>
+                    </div>
+
+                    <!-- COD Button -->
+                    <button id="cod-button" onclick="confirmOrder()" class="bg-green-500 text-white text-lg font-medium rounded-lg w-full py-2 hover:bg-green-600 hidden">Place order</button>
+
+                    <p class="text-xs text-gray-500 mt-4">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</p>
+                </div>
+            </div>
+
+            <!-- Order Summary Section -->
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+                <div class="border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <img src="https://via.placeholder.com/50" alt="Product Image" class="w-16 h-16 object-cover mr-4">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-800">Taxmax Leather Bag</h3>
+                                <p class="text-sm text-gray-500">Brown Vegan Leather</p>
+                                <p class="text-sm text-gray-500">Qty: 2</p>
+                            </div>
+                        </div>
+                        <p class="text-sm font-medium text-gray-800">$49.80</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gift or discount code</label>
+                        <div class="flex">
+                            <input type="text" id="discount-code" class="border border-gray-300 rounded-l-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter code">
+                            <button id="apply" class="bg-gray-800 text-white px-4 rounded-r-lg hover:bg-gray-900">Apply</button>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Subtotal</span>
+                            <span class="text-sm text-gray-800">$49.80</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Shipping</span>
+                            <span class="text-sm text-gray-800">$7.24</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-lg font-medium text-gray-800">
+                        <span>Total</span>
+                        <span>$59.28</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Including $2.24 in taxes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thank You Section (Initially Hidden) -->
+        <div id="thank-you-section" class="hidden">
+            <div class="section">
+                <h2 class="text-2xl font-semibold text-green-500 mb-4">Thank you, John Doe!</h2>
+                <p class="text-sm text-gray-500 mb-6">Confirmation #<span id="confirmation-id">#OVL5HADD05</span></p>
+                <p class="text-md text-gray-700 mb-4">Your order is confirmed</p>
+                <p class="text-sm text-gray-500 mb-4">You'll receive a confirmation email with your order number shortly.</p>
+                
+                <div class="mb-4">
+                    <input type="checkbox" id="news-offers" class="form-checkbox text-blue-600">
+                    <label for="news-offers" class="ml-2 text-sm text-gray-600">Email me with news and offers</label>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <h3 class="text-md font-medium text-gray-800 mb-2">Order Details</h3>
+                        <p id="customer-name" class="text-sm text-gray-600 mb-2">John Doe</p>
+                        <p id="customer-email" class="text-sm text-gray-600 mb-2">john.doe@example.com</p>
+                        <p id="shipping-address" class="text-sm text-gray-600 mb-2">
+                            123 Main St, Apt 4B<br>
+                            New York, NY, 10001<br>
+                            USA
+                        </p>
+                        <p class="text-sm text-gray-600 mb-2">Shipping method: Standard Shipping</p>
+                    </div>
+                    <div>
+                        <h3 class="text-md font-medium text-gray-800 mb-2">Payment Method</h3>
+                        <p id="payment-method" class="text-sm text-gray-600 mb-2">Credit Card ending in ****1234</p>
+                        <p id="payment-amount" class="text-sm text-gray-600 mb-2">Total: USD295.62</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="#" class="text-blue-600 text-sm">Need help? Contact us</a>
+                </div>
+
+                <div class="mt-4">
+                    <button class="bg-green-500 text-white text-md font-medium rounded-lg w-full py-2 hover:bg-green-600">Continue Shopping</button>
+                </div>
+            </div>
+
+            <!-- Right Section (Order Summary and Payment) -->
+            <div class="section">
+                <h3 class="text-md font-medium text-gray-800 mb-4">Your Order</h3>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50" alt="Product Image" class="w-16 h-16 object-cover mr-4">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-800">Wireless Headphones</h4>
+                            <p class="text-sm text-gray-500">Qty: 2</p>
+                        </div>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">$194.12</p>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50" alt="Product Image" class="w-16 h-16 object-cover mr-4">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-800">Bluetooth Speaker</h4>
+                            <p class="text-sm text-gray-500">Qty: 1</p>
+                        </div>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">$141.49</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Subtotal</span>
+                        <span class="text-sm text-gray-800">$294.99</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Shipping</span>
+                        <span class="text-sm text-gray-800">FREE</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Estimated Taxes</span>
+                        <span class="text-sm text-gray-800">$25.63</span>
+                    </div>
+                </div>
+                <div class="flex justify-between text-lg font-medium text-gray-800">
+                    <span>Total</span>
+                    <span>$295.62</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
